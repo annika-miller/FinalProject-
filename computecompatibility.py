@@ -20,8 +20,10 @@ def main():
     print(" ")
     for row in result:
         respondents.append(row[0])
-        self = [row[i] for i in range(1,int((len(row)-1)/2 + 1, 2))] #self-responses go in one array
-        other = [row[i] for i in range(int((len(row)-1)/2 + 1), len(row),2)] #others responses go in other array
+        responses = [row[i] for i in range(1,len(row), 2)] #responses go in one array
+        weights = [row[i] for i in range(2, len(row), 2)] #weights to responses go in another array
+        #self = [row[i] for i in range(1,int((len(row)-1)/2 + 1, 2))] #self-responses go in one array
+        #other = [row[i] for i in range(int((len(row)-1)/2 + 1), len(row),2)] #others responses go in other array
         dictionary[row[0]] = [self, other] #add a dictionary entry with name as key and value as double array with self, others answers
     file.close()
 
