@@ -21,11 +21,12 @@ def extractInfo(reader):
     for row in result:
         if row != result[0]:
             respondents.append(row[0])
-            responses = [row[i] for i in range(1,len(row), 2)] #responses go in one array
-            weights = [row[i] for i in range(2, len(row), 2)] #weights to responses go in another array
+            responses = [row[i] for i in range(2,len(row), 2)] #responses go in one array
+            weights = [row[i] for i in range(3, len(row), 2)] #weights to responses go in another array
+            email = [row[1]]
             #self = [row[i] for i in range(1,int((len(row)-1)/2 + 1, 2))] #self-responses go in one array
             #other = [row[i] for i in range(int((len(row)-1)/2 + 1), len(row),2)] #others responses go in other array
-            dictionary[row[0]] = [responses, weights] #add a dictionary entry with name as key and value as double array with self, others answer
+            dictionary[row[0]] = [responses, weights, email] #add a dictionary entry with name as key and value as double array with self, others answer
     
 #method to compute each person's list of compatible roommates    
 def computecompatibility():
@@ -42,7 +43,7 @@ def computecompatibility():
                     if own_answer == response: #if person's answer matches potential roommate's, add to their compatibility sum
                         sums[respondent] += int(array1[1][i]) #add the number of importance that the person assigned the question
         compatibilitylist = [key[0] for key in sums.most_common()] #createan ordered list of potential roommates in order of compatibility sums
-        compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[]}
+        compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[], "email":array1[2]}
         people.append(compatibledict)
         
 def main():
