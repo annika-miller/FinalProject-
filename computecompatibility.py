@@ -7,7 +7,7 @@ from collections import Counter
 
 dictionary = {} #stores names and survey answers
 respondents = [] #indexed list of names
-matrix = {} #stores sorted compatibility
+people = [] #stores sorted compatibility
 
 def main():
     import csv
@@ -44,8 +44,9 @@ def main():
                     if own_answer == response:
                         sums[respondent] += int(array1[1][i])
         compatibilitylist = [key[0] for key in sums.most_common()]
-        matrix[person] = compatibilitylist
-    print(matrix)
+        dictionary = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[]}
+        people.append(dictionary)
+    print(people)
             
 main()
     
