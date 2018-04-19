@@ -10,8 +10,8 @@ respondents = [] #indexed list of names
 people = [] #stores sorted compatibility
 
 #method to read csv and put relevant information into necessary data structures
-def extractInfo(file):
-    reader = csv.reader(file)
+def extractInfo(reader):
+    
     #print(reader)
     result = [[item for item in row if item != ''] for row in reader]
     result = [x for x in result if x]
@@ -48,8 +48,9 @@ def computecompatibility():
 def main():
     import csv
     file = open('RoommateDataTest.csv',"r")
+    reader = csv.reader(file)
     #print(file)
-    extractInfo(file) #call method that reads in and stores info from csv
+    extractInfo(reader) #call method that reads in and stores info from csv
     file.close()
     #create sums based on compatibility
     computecompatibility()
