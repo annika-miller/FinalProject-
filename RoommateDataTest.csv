@@ -1,7 +1,7 @@
-name,bedtime,q1 weight,wake up,q2 weight,homework,q3 weight,music,q4 weight
-John,10,1,9,1,1,1,country,1
-Amanda,11,3,9,0,2,2,rock ,1
-Riley,11,3,8,1,3,3,rock ,0
-Georgia,12,1,8,0,3,0,country,0
-Nikki,12,2,5,2,1,0,rap ,4
-Tim,9,2,7,3,2,2,rap ,3
+name,email,bedtime,q1 weight,wake up,q2 weight,homework,q3 weight,music,q4 weight
+John,john@gmail.com,10,1,9,1,1,1,country,1
+Amanda,amanda@gmail.com,11,3,9,0,2,2,rock ,1
+Riley,Riley@gmail.com,11,3,8,1,3,3,rock ,0
+Georgia,Georgia@gmail.com,12,1,8,0,3,0,country,0
+Nikki,Nikki@gmail.com,12,2,5,2,1,0,rap ,4
+Tim,Tim@gmail.com,9,2,7,3,2,2,rap ,3

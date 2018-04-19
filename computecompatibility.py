@@ -24,9 +24,10 @@ def extractInfo(reader):
             responses = [row[i] for i in range(2,len(row), 2)] #responses go in one array
             weights = [row[i] for i in range(3, len(row), 2)] #weights to responses go in another array
             email = [row[1]]
+            #print(email)
             #self = [row[i] for i in range(1,int((len(row)-1)/2 + 1, 2))] #self-responses go in one array
             #other = [row[i] for i in range(int((len(row)-1)/2 + 1), len(row),2)] #others responses go in other array
-            dictionary[row[0]] = [responses, weights, email] #add a dictionary entry with name as key and value as double array with self, others answer
+            dictionary[row[0]] = [responses, weights, email] #add a dictionary entry with name as key and value as array of arrays with answers, weights, and email
     
 #method to compute each person's list of compatible roommates    
 def computecompatibility():
