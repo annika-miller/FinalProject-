@@ -44,8 +44,8 @@ def main():
                     if own_answer == response:
                         sums[respondent] += int(array1[1][i])
         compatibilitylist = [key[0] for key in sums.most_common()]
-        dictionary = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[]}
-        people.append(dictionary)
+        compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[]}
+        people.append(compatibledict)
     print(people)
             
 main()
