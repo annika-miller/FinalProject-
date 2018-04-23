@@ -7,7 +7,7 @@ from collections import Counter
 
 dictionary = {} #stores names and survey answers
 respondents = [] #indexed list of names
-people = [] #stores sorted compatibility
+people = {} #stores sorted compatibility
 
 #method to read csv and put relevant information into necessary data structures
 def extractInfo(reader):
@@ -45,7 +45,8 @@ def computecompatibility():
                         sums[respondent] += int(array1[1][i]) #add the number of importance that the person assigned the question
         compatibilitylist = [key[0] for key in sums.most_common()] #createan ordered list of potential roommates in order of compatibility sums
         compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[], "email":array1[2]}
-        people.append(compatibledict)
+        dictlist = [True, compatibilitylist, "", []]
+        people[person] = dictlist
         
 def main():
     import csv
