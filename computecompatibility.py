@@ -20,18 +20,22 @@ def extractInfo(reader):
     print(" ")
     for row in result:
         if row != result[0]:
-            respondents.append(row[0])
-            responses = [row[i] for i in range(2,len(row)-1, 2)] #responses go in one array
-            weights = [row[i] for i in range(3, len(row)-1, 2)] #weights to responses go in another array
+            name = row[2]
+            respondents.append(name)
+            responses = [row[i] for i in range(3,len(row)-1, 2)] #responses go in one array
+            weights = [row[i] for i in range(4, len(row)-1, 2)] #weights to responses go in another array
             info = [row[1], row[-1]] #save email and misc. info separately
             #print(info)
             #print(email)
             #self = [row[i] for i in range(1,int((len(row)-1)/2 + 1, 2))] #self-responses go in one array
             #other = [row[i] for i in range(int((len(row)-1)/2 + 1), len(row),2)] #others responses go in other array
-            dictionary[row[0]] = [responses, weights, info] #add a dictionary entry with name as key and value as array of arrays with answers, weights, and email
+            dictionary[name] = [responses, weights, info] #add a dictionary entry with name as key and value as array of arrays with answers, weights, and email
+
+
+
     
 #method to compute each person's list of compatible roommates    
-def computecompatibility():
+def computeCompatibility():
     for person in respondents:
         array1 = dictionary[person] #person's responses and weights
         sums = Counter({})
@@ -39,7 +43,7 @@ def computecompatibility():
             if respondent != person:
                 array2 = dictionary[respondent] #potential roommate's responses
                 sums[respondent] = 0
-                for i in range(0, len(array1[0])):
+                for i in range(0, len(array2[0])):
                     own_answer = array1[0][i]
                     response = array2[0][i]
                     if own_answer != array1[0][-1]:
@@ -49,19 +53,21 @@ def computecompatibility():
                         if own_answer == respondent:
                             sums[respondent] += 900
         compatibilitylist = [key[0] for key in sums.most_common()] #createan ordered list of potential roommates in order of compatibility sums
-        compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[], "email":array1[2]}
+        #compatibledict = {"name":person, "is_free":True, "preferences":compatibilitylist, "matched_with": "", "proposed_to":[], "email":array1[2]}
         dictlist = [True, compatibilitylist, "", []]
         people[person] = dictlist
+
+
         
 def main():
     import csv
-    file = open('RoommateDataTest.csv',"r")
+    file = open('shortVersion.csv',"r")
     reader = csv.reader(file)
     #print(file)
     extractInfo(reader) #call method that reads in and stores info from csv
     file.close()
     #create sums based on compatibility
-    computecompatibility()
+    computeCompatibility()
     print(people)
             
 main()
