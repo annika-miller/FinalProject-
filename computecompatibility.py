@@ -44,7 +44,7 @@ def computeCompatibility():
                         if own_answer == respondent: #if the primary person requested the responsent
                             sums[respondent] += 900 #add to their compatibility sum so that they will be the first choice
         compatibilitylist = [key[0] for key in sums.most_common()] #create an ordered list of potential roommates in order of compatibility sums
-        dictlist = [True, compatibilitylist, "", []] #list of information needed to find roommate matches
+        dictlist = [True, compatibilitylist, "","","", []] #list of information needed to find roommate matches
         people[person] = dictlist #add dictlist to people dict with person as key
 
         
