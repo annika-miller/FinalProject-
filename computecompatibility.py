@@ -28,6 +28,7 @@ def extractInfo(reader):
 #method to compute each person's list of compatible roommates    
 def computeCompatibility():
     for person in respondents: #deal with one person at a time
+        roommateRequest = "" #everyone starts out assuming they don't have a specific request
         array1 = dictionary[person] #person's responses and weights
         sums = Counter({}) #list of people and their compatibility sum in relation to the primary person
         for respondent in respondents: # compare every other person to the primary person
@@ -43,8 +44,13 @@ def computeCompatibility():
                     else: #if response is last one in array, which is the specific roommate request question
                         if own_answer == respondent: #if the primary person requested the responsent
                             sums[respondent] += 900 #add to their compatibility sum so that they will be the first choice
+                            roommateRequest = respondent
         compatibilitylist = [key[0] for key in sums.most_common()] #create an ordered list of potential roommates in order of compatibility sums
-        dictlist = [True, compatibilitylist, "","","", 0] #list of information needed to find roommate matches
+        dictlist = []
+        if roommateRequest != "": #if there's a specific roommate request, add it to the person's list of relevant info
+            dictlist = [True, compatibilitylist, "","","", 0, roommateRequest] 
+        else:
+            dictlist = [True, compatibilitylist, "","","", 0] #list of information needed to find roommate matches
         people[person] = dictlist #add dictlist to people dict with person as key
 
         
