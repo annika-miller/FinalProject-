@@ -1,4 +1,5 @@
 # FinalProject-
+Annika Miller, Alonda Robichaud, Rachel Cooke, Matty Kulke
 OKRoomie generates a list of ideal roommate matches given a CSV of survey responses from a roommate matching survey. In order to run, the CSV must be specified in the main method. The survey is a google form that automatically updates a CSV with new responses. Currently, the program does not recognize certain accented letters in names. The program can be run successfully in terminal (the accented letter will just be represented as an odd string of characters), but cannot run in idle.
 
 The program generates ideal matches taking into account if potential roommates have matching responses to survey questions, and how each respondent has ranked the importance of their roommates reponses for a given question. Once a ranked list of roommates is developed for each person, OKRoomie implement Irving’s algorithm which efficiently ensures that each person has the best possible match (there are no two people that prefer each other the most and are not matched). 
