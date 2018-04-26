@@ -14,22 +14,22 @@ dictionary = {}
 #person who is assigned a single
 single = ""
 #index in the list of their information(list that is the value in the dictionary) of whether the person is free
-isFreeInd = 0
+is_free_ind = 0
 #index in the list of their information of their preference list
-preferencesInd = 1
+pref_ind = 1
 #index in the list of their information of the person they're matched with
-matchInd = 2
+match_ind = 2
 #index in the list of their information of the person they proposed to and accept
-proposedInd = 3
+propose_ind = 3
 #index in the list of their information of the person they accepted a proposal from 
-acceptInd = 4
+accept_in = 4
 #index in the list of their information of the count that keeps track of how many people rejected them
-rejectInd = 5
+reject_ind = 5
 #index in the list of their information of the person they requested as a roommate, if any
-requestInd = 6
+request_ind = 6
 
 #method to read csv and put relevant information into necessary data structures
-def extractInfo(reader):
+def extract_info(reader):
     #make sure only pulling cells that have info in them
     result = [[item for item in row if item != ''] for row in reader]
     result = [x for x in result if x]
@@ -44,7 +44,7 @@ def extractInfo(reader):
             dictionary[name] = [responses, weights, info] #add a dictionary entry with name as key and value as array of arrays with answers, weights, and info
 
 #method to compute each person's list of compatible roommates    
-def computeCompatibility():
+def compute_compatibility():
     for person in respondents: #deal with one person at a time
         array1 = dictionary[person] #person's responses and weights
         sums = Counter({}) #list of people and their compatibility sum in relation to the primary person
@@ -67,53 +67,53 @@ def computeCompatibility():
 
 def who_is_better(person, roomie1, roomie2):
     '''decides which proposer is a better roomate option'''
-    preferences = people[person][preferencesInd]
-    for p in preferences:
-        if roomie1 == p:
+    preferences = people[person][pref_ind]
+    for person in preferences:
+        if roomie1 == person:
             return roomie1
-        if roomie2 == p:
+        if roomie2 == person:
             return roomie2
 
 def match(roomie1, roomie2):
     '''match 2 people as roommates'''
-    people[roomie1][matchInd] = roomie2
-    people[roomie2][matchInd] = roomie1
-    people[roomie1][isFreeInd] = False
-    people[roomie2][isFreeInd] = False
+    people[roomie1][match_ind] = roomie2
+    people[roomie2][match_ind] = roomie1
+    people[roomie1][is_free_ind] = False
+    people[roomie2][is_free_ind] = False
 
 def least_desired():
     '''find the least desired person in everyone's list and give them a single'''
     nPreferences = len(people)-1
     lastRanked = {}
-    for p in people:
-        lastPerson = people[p][preferencesInd][-1]
-        if people[lastPerson][isFreeInd]:
+    for person in people:
+        lastPerson = people[person][pref_ind][-1]
+        if people[lastPerson][is_free_ind]:
             if lastPerson not in lastRanked:
                 lastRanked[lastPerson] = 1
             else:
                 lastRanked[lastPerson] += 1
     leastDesired = next(iter(lastRanked))
-    for p in lastRanked.keys():
-        if lastRanked[p] > lastRanked[leastDesired]:
-            leastDesired = p
+    for person in lastRanked.keys():
+        if lastRanked[person] > lastRanked[leastDesired]:
+            leastDesired = person
     return leastDesired
 
 def single(person):
     '''assgins the person in the parameter a single'''
-    people[person][isFreeInd] = False
-    people[person][matchInd] = person
-    people[person][preferencesInd][0] = person
-    people[person][acceptInd] = person
-    people[person][proposedInd] = person
+    people[person][is_free_ind] = False
+    people[person][match_ind] = person
+    people[person][pref_ind][0] = person
+    people[person][accept_in] = person
+    people[person][propose_ind] = person
 
 def propose(proposer, index):
     '''propose to the best option on their list who would accept'''
     #propose to the first person
-    proposeTo = people[proposer][preferencesInd][index]
-    if people[proposeTo][isFreeInd] and not people[proposeTo][acceptInd]:
+    proposeTo = people[proposer][pref_ind][index]
+    if people[proposeTo][is_free_ind] and not people[proposeTo][accept_in]:
         #if havent accepted any proposals, accept
         accept(proposeTo, proposer)
-    elif people[proposeTo][acceptInd] and people[proposeTo][isFreeInd]:
+    elif people[proposeTo][accept_in] and people[proposeTo][is_free_ind]:
         #if accepted a proposal already, check if this one is better
         if is_better(proposeTo, proposer):
             #if better, accept this proposal over the old one
@@ -126,21 +126,21 @@ def propose(proposer, index):
 
 def new_tie(proposeTo, proposer):
     '''removes link with old potential pair and finds a new pair for the person dumped'''
-    oldProposer = people[proposeTo][acceptInd]
+    oldProposer = people[proposeTo][accept_in]
     break_tie(proposeTo, oldProposer)
     accept(proposeTo,proposer)
     #find new pair for old proposer, starting at next index(kept track by number of rejections
-    propose(oldProposer, people[oldProposer][rejectInd])
+    propose(oldProposer, people[oldProposer][reject_ind])
                     
 def break_tie(acceptor, proposer):
     '''breaks the tie between 2 people'''
-    people[proposer][proposedInd] = ""
-    people[proposer][rejectInd] += 1
-    people[acceptor][acceptInd] = ""
+    people[proposer][propose_ind] = ""
+    people[proposer][reject_ind] += 1
+    people[acceptor][accept_in] = ""
 
 def is_better(person, potentialMatch):
     '''check if the potentialMatch is the better option'''
-    currentMatch = people[person][acceptInd]
+    currentMatch = people[person][accept_in]
     if potentialMatch == who_is_better(person, potentialMatch, currentMatch):
         return True
     else:
@@ -148,26 +148,26 @@ def is_better(person, potentialMatch):
             
 def accept(acceptor, proposer):
     '''accept proposal'''
-    people[acceptor][acceptInd] = proposer
-    people[proposer][proposedInd] = acceptor
+    people[acceptor][accept_in] = proposer
+    people[proposer][propose_ind] = acceptor
 
 def remove(person1, person2):
     '''remove mention of person1 from person2's list and vice versa'''
-    if person2 in people[person1][preferencesInd]:
-        people[person1][preferencesInd].remove(person2)
-    elif person1 in people[person2][preferencesInd]:
-        people[person2][preferencesInd].remove(person1)
+    if person2 in people[person1][pref_ind]:
+        people[person1][pref_ind].remove(person2)
+    elif person1 in people[person2][pref_ind]:
+        people[person2][pref_ind].remove(person1)
 
 def clear(person):
     '''remove person from everyone's list'''
-    for p in people[person][preferencesInd]:
+    for p in people[person][pref_ind]:
         remove(p,person)
 
 def pref_cycle(person,lst):
     '''check for a preference cycle in the ranking to help with match elimination'''
-    if people[person][preferencesInd]:
+    if people[person][pref_ind]:
         #pick the person's last choice because want to get rid of them
-        last = people[person][preferencesInd][-1]
+        last = people[person][pref_ind][-1]
         if last in lst:
             lst.append(last)
             #once cycle is found, remove "diagonal pairs" as possibilities
@@ -181,40 +181,40 @@ def clear_pref_list():
     '''after all proposals have been made, clear preference list of anyone ranked lower
         than person currently accepted since you can do worse'''
     for person in people:
-        preferences = people[person][preferencesInd]
-        accepted = people[person][acceptInd]
-        proposed = people[person][proposedInd]
-        a = people[person][preferencesInd].index(accepted)+1
-        people[person][preferencesInd]=preferences[:a]
+        preferences = people[person][pref_ind]
+        accepted = people[person][accept_in]
+        proposed = people[person][propose_ind]
+        a = people[person][pref_ind].index(accepted)+1
+        people[person][pref_ind]=preferences[:a]
 
 def mirror():
     '''do a mirror removal'''
     for p in people:
         for person in people:
-            if p not in people[person][preferencesInd] and person in people[p][preferencesInd]:
-                people[p][preferencesInd].remove(person)
+            if p not in people[person][pref_ind] and person in people[p][pref_ind]:
+                people[p][pref_ind].remove(person)
 
 def match_request():
     '''match people who have explicitly requested each other'''
-    nPairs = 0
-    for p in people:
-        request = people[p][requestInd]
+    n_pairs = 0
+    for person in people:
+        request = people[person][request_ind]
         if request:
-            if people[request][requestInd]== p and people[p][isFreeInd]:
-                match(p, request)
-                nPairs += 1
-                people[p][acceptInd] = request
-                people[p][proposedInd] = request
-                people[request][proposedInd] = p
-                people[request][acceptInd] = p
-    return nPairs
+            if people[request][request_ind]== person and people[person][is_free_ind]:
+                match(person, request)
+                n_pairs += 1
+                people[person][accept_in] = request
+                people[person][propose_ind] = request
+                people[request][propose_ind] = person
+                people[request][accept_in] = person
+    return n_pairs
 
-def send_mail(seekerName, seekerEmail, roommateName, roommateEmail, message):
+def send_mail(seeker_name, seeker_email, roommate_name, roommate_email, message):
     '''This method sends an email to two people who are paired as roommates,
     including a message they have for their roommate'''
 
-    content = "Hello "+seekerName+",\n \nYou have been matched with "+roommateName+\
-              " ("+roommateEmail+")"+" for the following academic year of 2018-2019.\n"+roommateName+\
+    content = "Hello "+seeker_name+",\n \nYou have been matched with "+roommate_name+\
+              " ("+roommate_email+")"+" for the following academic year of 2018-2019.\n"+roommate_name+\
               ' has a message that they would like to share with you, which you may find below. We have also provided you with their email address, so go ahead and get to know each other!\n\n"'\
               +message+'"\n\nBest, \nSmith University <3'
     email = "SmithUniversityResLife@gmail.com"
@@ -223,7 +223,7 @@ def send_mail(seekerName, seekerEmail, roommateName, roommateEmail, message):
     mail.ehlo()
     mail.starttls()
     mail.login(email,password)
-    mail.sendmail(email, seekerEmail, content)
+    mail.sendmail(email, seeker_email, content)
     mail.close()
 
 def send_single(person, personEmail):
@@ -242,15 +242,15 @@ def main():
     import csv
     file = open('OKRoomie.csv',"r") #open and read the csv file
     reader = csv.reader(file)
-    extractInfo(reader) #call method that reads in and stores info from csv
+    extract_info(reader) #call method that reads in and stores info from csv
     file.close()
-    computeCompatibility() #create sums based on compatibility
+    compute_compatibility() #create sums based on compatibility
    #count to keep track of matches
     count = 0
     #first person in list
     index = next(iter(people))
     #number of people
-    nPairs = math.floor(len(people)/2)
+    n_pairs = math.floor(len(people)/2)
     #match people who requested each other
     count += match_request()
     #if odd find least desired and give them a single
@@ -258,31 +258,31 @@ def main():
         solo = least_desired()
         single(solo)
     #propose
-    for p in people:
-        if people[p][isFreeInd]:
-            propose(p,0)
+    for person in people:
+        if people[person][is_free_ind]:
+            propose(person,0)
     #clear preference list after accepted index
     clear_pref_list()
     #do removal to mirror the one above
     mirror()
-    while count != nPairs:
-        for p in people:
+    while count != n_pairs:
+        for person in people:
             #if only one in preference, match them
-            if len(people[p][preferencesInd]) == 1 and people[p][isFreeInd]:
-                match(p,people[p][preferencesInd][0])
-                clear(people[p][preferencesInd][0])
-                clear(p)
+            if len(people[person][pref_ind]) == 1 and people[person][is_free_ind]:
+                match(person,people[person][pref_ind][0])
+                clear(people[person][pref_ind][0])
+                clear(person)
                 count +=1
 
             #if there are more people find a preference cycle to eliminate pairs
-            elif len(people[p][preferencesInd]) > 1:
-                pref_cycle(p,[p])               
+            elif len(people[person][pref_ind]) > 1:
+                pref_cycle(person,[person])               
 
 def result():
     print("Stable matched roommates:\n")
-    for p in people:
-        roommate1 = p
-        roommate2 = people[p][matchInd]
+    for person in people:
+        roommate1 = person
+        roommate2 = people[person][match_ind]
 
         print("{} <---> {}".format(roommate1, roommate2))
         if roommate1 != roommate2:
@@ -291,7 +291,3 @@ def result():
             send_single(roommate1, dictionary[roommate1][2][0])
 main()
 result()
-
-            
-            
-    
