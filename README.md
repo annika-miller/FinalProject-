@@ -6,7 +6,4 @@ The program generates ideal matches taking into account if potential roommates h
 The code is somewhat flexible for changes in the survey, with a few exceptions. The index of the participant's name must be the  first question, the “what do you want your roommate to know about you?” short answer question must be second to last, and the specific roommate request short answer must be last. The number of survey questions can be changed, but the weighting of reponses works such that the question ranking scale must be every other question. If questions are added, they will appear on the updated CSV as the last columns, even if they were inserted into the middle of the survey. The CSV columns will have to be manually shifted in this case. 
 
 
-Contents in github repo: 
-OKroomie file containing code 
-CSV of survey responses 
-Link to survey 
+Contents in github repo: OKroomie file containing code, CSV of survey responses, Link to survey 
