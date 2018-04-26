@@ -9,3 +9,5 @@ The code is somewhat flexible for changes in the survey, with a few exceptions. 
 Contents in github repo: OKroomie file containing code, CSV of survey responses, Link to survey 
 
 Link to survey: https://docs.google.com/forms/d/e/1FAIpQLSe0B7P87diTNIqmW0yDcnvb-PFuXtfX8DIpQ3WY_r55SZ9rag/viewform
+
+Right now, the part where we consider the specific roommate requests isn't working. We're not sure what the problem is, but it just seems to ignore the roommate request entry. Although when we tested it with a different file it worked but it doesn't work everytime. It seems to not work with certain people.
