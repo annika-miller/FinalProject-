@@ -46,6 +46,7 @@ def extract_info(reader):
 #method to compute each person's list of compatible roommates    
 def compute_compatibility():
     for person in respondents: #deal with one person at a time
+        request = ""
         array1 = dictionary[person] #person's responses and weights
         sums = Counter({}) #list of people and their compatibility sum in relation to the primary person
         for respondent in respondents: # compare every other person to the primary person
@@ -60,10 +61,16 @@ def compute_compatibility():
                             sums[respondent] += int(array1[1][i]) #add the number of importance that the person assigned the question
                     else: #if response is last one in array, which is the specific roommate request question
                         if own_answer == respondent: #if the primary person requested the responsent
+                            if person == "Alonda D Robichaud":
+                                print('wa')
+                            print('here',respondent)
                             sums[respondent] += 900 #add to their compatibility sum so that they will be the first choice
+                            request = respondent
         compatibilitylist = [key[0] for key in sums.most_common()] #create an ordered list of potential roommates in order of compatibility sums
-        dictlist = [True, compatibilitylist, "","","", 0,""] #list of information needed to find roommate matches
+        dictlist = [True, compatibilitylist, "","","", 0,request] #list of information needed to find roommate matches
         people[person] = dictlist #add dictlist to people dict with person as key
+        if person == "Matty Frances Kulke":
+            print("mat",people[person])
 
 def who_is_better(person, roomie1, roomie2):
     '''decides which proposer is a better roomate option'''
@@ -87,7 +94,9 @@ def least_desired():
     lastRanked = {}
     for person in people:
         lastPerson = people[person][pref_ind][-1]
+        print(lastPerson, people[lastPerson][is_free_ind])
         if people[lastPerson][is_free_ind]:
+            print(lastPerson, 'here')
             if lastPerson not in lastRanked:
                 lastRanked[lastPerson] = 1
             else:
@@ -199,15 +208,17 @@ def match_request():
     n_pairs = 0
     for person in people:
         request = people[person][request_ind]
+        print("REQ",request)
         if request:
-            if people[request][request_ind]== person and people[person][is_free_ind]:
+            if people[request][request_ind]== person:
                 match(person, request)
                 n_pairs += 1
+                print('match',person,people[person])
                 people[person][accept_in] = request
                 people[person][propose_ind] = request
                 people[request][propose_ind] = person
                 people[request][accept_in] = person
-    return n_pairs
+    return n_pairs/2
 
 def send_mail(seeker_name, seeker_email, roommate_name, roommate_email, message):
     '''This method sends an email to two people who are paired as roommates,
@@ -253,6 +264,9 @@ def main():
     n_pairs = math.floor(len(people)/2)
     #match people who requested each other
     count += match_request()
+    for person in people:
+        if not people[person][is_free_ind]:
+            print(person, people[person])
     #if odd find least desired and give them a single
     if len(people)%2 != 0:
         solo = least_desired()
@@ -285,9 +299,9 @@ def result():
         roommate2 = people[person][match_ind]
 
         print("{} <---> {}".format(roommate1, roommate2))
-        if roommate1 != roommate2:
+        '''if roommate1 != roommate2:
             send_mail(roommate1, dictionary[roommate1][2][0], roommate2, dictionary[roommate2][2][0], dictionary[roommate1][2][1])
         else:
-            send_single(roommate1, dictionary[roommate1][2][0])
+            send_single(roommate1, dictionary[roommate1][2][0])'''
 main()
 result()
