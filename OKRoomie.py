@@ -231,17 +231,17 @@ def send_mail(seeker_name, seeker_email, roommate_name, roommate_email, message)
     content = "Hello "+seeker_name+",\n \nYou have been matched with "+roommate_name+\
               " ("+roommate_email+")"+" for the following academic year of 2018-2019.\n"+roommate_name+\
               ' has a message that they would like to share with you, which you may find below. We have also provided you with their email address, so go ahead and get to know each other!\n\n"'\
-              +message+'"\n\nBest, \nSmith University <3'
+              +message+'"\n\nBest, \nSmith University <3' #inserted message
     email = "SmithUniversityResLife@gmail.com"
     password = "sophiasmith"
-    mail = smtplib.SMTP('smtp.gmail.com',587)
+    mail = smtplib.SMTP('smtp.gmail.com',587) #opens up smtp session on local machine
     mail.ehlo()
     mail.starttls()
-    mail.login(email,password)
+    mail.login(email,password) #remote login to dummy account
     mail.sendmail(email, seeker_email, content)
     mail.close()
 
-def send_single(person, personEmail):
+def send_single(person, person_email):
     '''Sends an email to the person who got a single'''
     content = "Hello "+person+",\n \nYou have been assign a single for the following academic year of 2018-2019.\n\nBest,\nSmith University"
     email = "SmithUniversityResLife@gmail.com"
@@ -250,7 +250,7 @@ def send_single(person, personEmail):
     mail.ehlo()
     mail.starttls()
     mail.login(email,password)
-    mail.sendmail(email, personEmail, content)
+    mail.sendmail(email, person_email, content)
     mail.close()
 
 def main():
@@ -290,14 +290,15 @@ def main():
 def result():
     print("Stable matched roommates:\n")
     for person in people:
-        roommate1 = person
+        roommate1 = people[person][name_ind]
         roommate2 = people[person][match_ind]
-        roommate1 = people[roommate1][name_ind]
         roommate2 = people[roommate2][name_ind]
 
         print("{} <---> {}".format(roommate1, roommate2))
+        #send an email notifying them of their roommate
         if roommate1 != roommate2:
             send_mail(roommate1, dictionary[roommate1][2][0], roommate2, dictionary[roommate2][2][0], dictionary[roommate2][2][1])
+        #if they dont have a roommate, let them know they have a single
         else:
             send_single(roommate1, dictionary[roommate1][2][0])
 main()
