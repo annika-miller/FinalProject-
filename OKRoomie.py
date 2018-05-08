@@ -27,7 +27,7 @@ accept_in = 4
 reject_ind = 5
 #index in the list of their information of the person they requested as a roommate, if any
 request_ind = 6
-#index in the list of their name stripped and lower cased, for comparison purposes
+#index in the list of their name before splitting
 name_ind = 7
 
 '''method to read csv and put relevant information into necessary data structures'''
@@ -51,7 +51,7 @@ def compute_compatibility():
         request = "" #everyone starts out assuming they don't have a specific roommate request
         array1 = dictionary[person] #person's responses and weights
         sums = Counter({}) #list of people and their compatibility sum in relation to the primary person
-        stripped_name = ''.join(person.split()).lower()
+        stripped_name = ''.join(person.split()).lower() #split name and lower case it for comparison purposes
         for respondent in respondents: # compare every other person to the primary person
             if respondent != person:
                 array2 = dictionary[respondent] #potential roommate's responses
@@ -296,10 +296,10 @@ def result():
         roommate2 = people[roommate2][name_ind]
 
         print("{} <---> {}".format(roommate1, roommate2))
-        '''if roommate1 != roommate2:
+        if roommate1 != roommate2:
             send_mail(roommate1, dictionary[roommate1][2][0], roommate2, dictionary[roommate2][2][0], dictionary[roommate2][2][1])
         else:
-            send_single(roommate1, dictionary[roommate1][2][0])'''
+            send_single(roommate1, dictionary[roommate1][2][0])
 main()
 result()
 
